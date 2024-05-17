@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Bookshelf {
+  BOOKSHELF_ID    Int    @id @default(autoincrement())
+  NAME  String
+  Books Books[] @relation
+}
+
+model Books {
+  BOOK_ID    Int    @id @default(autoincrement())
+  TITLE  String
+  AUTHOR  String
+  RELEASE_YEAR  Int
+  BOOKSHELF_ID  Int
+  bookshelf    Bookshelf     @relation(fields: [BOOKSHELF_ID], references: [BOOKSHELF_ID])
+  Transaction_Books Transaction_Books[] @relation
+  History History[] @relation
+}
+
+model Students {
+  STUDENT_ID    Int    @id @default(autoincrement())
+  NIK  String
+  STUDENT_NAME  String
+  IS_ACTIVE  Boolean
+  Transaction Transaction[] @relation
+  Transaction_Books Transaction_Books[] @relation
+  History History[] @relation
+}
+
+model Transaction {
+  TRANSACTION_ID    Int    @id @default(autoincrement())
+  student    Students     @relation(fields: [STUDENT_ID], references: [STUDENT_ID])
+  STUDENT_ID  Int
+  TRANSACTION_DATE DateTime
+  Transaction_Books Transaction_Books[] @relation
+  History History[] @relation
+}
+
+model Transaction_Books {
+  TRANSACTION_BOOKS_ID    Int    @id @default(autoincrement())
+  transaction    Transaction     @relation(fields: [TRANSACTION_ID], references: [TRANSACTION_ID], onUpdate: NoAction)
+  TRANSACTION_ID  Int
+  student    Students     @relation(fields: [STUDENT_ID], references: [STUDENT_ID], onUpdate: NoAction)
+  STUDENT_ID  Int
+  book    Books     @relation(fields: [BOOK_ID], references: [BOOK_ID], onUpdate: NoAction)
+  BOOK_ID  Int
+  START_DATE DateTime
+  RETURN_DATE DateTime
+}
+
+model History {
+  HISTORY_ID    Int    @id @default(autoincrement())
+  transaction    Transaction     @relation(fields: [TRANSACTION_ID], references: [TRANSACTION_ID], onUpdate: NoAction)
+  TRANSACTION_ID  Int
+  student    Students     @relation(fields: [STUDENT_ID], references: [STUDENT_ID], onUpdate: NoAction)
+  STUDENT_ID  Int
+  book    Books     @relation(fields: [BOOK_ID], references: [BOOK_ID],onUpdate: NoAction)
+  BOOK_ID  Int
+  START_DATE DateTime
+  EXACT_RETURN_DATE DateTime
+  INITIAL_RETURN_DATE DateTime?
+  BORROWINGG_TIME String?
+}
+
+
