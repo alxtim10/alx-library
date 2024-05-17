@@ -5,36 +5,37 @@ const Navbar = () => {
   const tabs = [
     {
       label: "Home",
-      description: "Exotic Rent, home of luxury cars",
-      link: "home",
+      description: "Home of books",
+      link: "",
     },
     {
-      label: "Rent",
-      description: "Rent luxury cars with the best quality",
-      link: "rent",
+      label: "Books",
+      description: "Input books dashboard",
+      link: "input-books",
     },
     {
-      label: "Pricing",
-      description: "Subscribe exotic rent membership",
-      link: "pricing",
+      label: "Students",
+      description: "Input students dashboard",
+      link: "input-students",
     },
     {
-      label: "Login",
-      description: "Login to your account ",
-      link: "signin",
+      label: "Bookshelf",
+      description: "Input bookshelf dashboard",
+      link: "input-bookshelf",
     },
   ];
 
   return (
     <nav className="relative">
-      <div className="flex items-center justify-between">
+      <div>
+      <div className="h-16 flex items-center justify-between">
         <h1
           onClick={() => {
             navigate(`/`);
           }}
-          className="text-2xl font-bold cursor-pointer"
+          className="text-xl font-bold cursor-pointer"
         >
-          Exotic Rent
+          ALX LIBRARY
         </h1>
         <div
           onClick={() => {}}
@@ -55,12 +56,15 @@ const Navbar = () => {
                   }}
                   key={i}
                 >
-                  <h1 className="text-sm font-semibold">{data.label}</h1>
+                  <h1 className="text-sm font-semibold cursor-pointer">
+                    {data.label}
+                  </h1>
                 </li>
               );
             })}
           </ul>
         </div>
+      </div>
       </div>
     </nav>
   );
