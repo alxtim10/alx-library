@@ -1,11 +1,7 @@
 const prisma = require('../db')
 
-const getBookshelfById = async (id) => {
-    const bookshelf = await prisma.bookshelf.findUnique({
-        where: {
-          BOOKSHELF_ID: id,
-        },
-      });
+const getBookshelf = async () => {
+    const bookshelf = await prisma.bookshelf.findMany();
 
       if(bookshelf == null){
         throw new Error("Data not Found");
@@ -15,5 +11,5 @@ const getBookshelfById = async (id) => {
 }
 
 module.exports = {
-    getBookshelfById
+  getBookshelf
 }

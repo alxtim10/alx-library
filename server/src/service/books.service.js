@@ -1,27 +1,46 @@
 const prisma = require("../db");
 
 const getPagingBooks = async (params) => {
-  const books = await prisma.books.findMany({
-    where: {
-      OR: [
-        {
-          TITLE: { contains: params.title, mode: "insensitive" },
-        },
-        {
-          AUTHOR: { contains: params.author, mode: "insensitive" },
-        },
-        {
-          RELEASE_YEAR: { equals: Number(params.year) },
-        },
-      ],
-    },
-  });
+  const pageNumber = parseInt(params.page, 10);
+  const pageSize = parseInt(params.size, 10);
+
+  const skip = (pageNumber - 1) * pageSize;
+  const take = pageSize;
+
+  const [books, totalBooks] = await Promise.all([
+    prisma.books.findMany({
+      where: {
+        TITLE: params.title
+          ? { contains: params.title, mode: "insensitive" }
+          : undefined,
+
+        AUTHOR: params.author
+          ? { contains: params.author, mode: "insensitive" }
+          : undefined,
+
+        RELEASE_YEAR: params.year ? { equals: Number(params.year) } : undefined,
+      },
+      skip,
+      take,
+    }),
+    prisma.books.count(),
+  ]);
+
+  const totalPages = Math.ceil(totalBooks / pageSize);
 
   if (books == null) {
     throw new Error("Data not Found");
   }
 
-  return books;
+  const res = {
+    totalBooks,
+    totalPages,
+    currentPage: pageNumber,
+    pageSize,
+    books,
+  };
+
+  return res;
 };
 
 const addBook = async (params) => {
@@ -29,7 +48,7 @@ const addBook = async (params) => {
     where: {
       TITLE: params.title,
       AUTHOR: params.author,
-      RELEASE_YEAR: params.year,
+      RELEASE_YEAR: Number(params.year),
     },
   });
 

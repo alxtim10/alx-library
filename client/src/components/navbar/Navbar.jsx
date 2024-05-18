@@ -11,17 +11,22 @@ const Navbar = () => {
     {
       label: "Books",
       description: "Input books dashboard",
-      link: "input-books",
+      link: "books",
     },
     {
       label: "Students",
       description: "Input students dashboard",
-      link: "input-students",
+      link: "students",
     },
     {
-      label: "Bookshelf",
-      description: "Input bookshelf dashboard",
-      link: "input-bookshelf",
+      label: "Cart & Transaction",
+      description: "Transaction Cart",
+      link: "transaction",
+    },
+    {
+      label: "History",
+      description: "Transaction History",
+      link: "history",
     },
   ];
 
