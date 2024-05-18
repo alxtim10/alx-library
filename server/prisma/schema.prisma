@@ -10,7 +10,16 @@ datasource db {
 model Bookshelf {
   BOOKSHELF_ID    Int    @id @default(autoincrement())
   NAME  String
-  Books Books[] @relation
+  BookshelfBooks BookshelfBooks[] @relation
+}
+
+model BookshelfBooks {
+  BOOKSHELF_BOOKS_ID Int @id @default(autoincrement())
+  BOOKSHELF_ID Int
+  bookshelf    Bookshelf     @relation(fields: [BOOKSHELF_ID], references: [BOOKSHELF_ID])
+  BOOK_ID Int
+  books    Books     @relation(fields: [BOOK_ID], references: [BOOK_ID])
+  STOCK Int
 }
 
 model Books {
@@ -18,20 +27,19 @@ model Books {
   TITLE  String
   AUTHOR  String
   RELEASE_YEAR  Int
-  BOOKSHELF_ID  Int
-  bookshelf    Bookshelf     @relation(fields: [BOOKSHELF_ID], references: [BOOKSHELF_ID])
+  STOCK Int
   Transaction_Books Transaction_Books[] @relation
   History History[] @relation
+  BookshelfBooks BookshelfBooks[] @relation
 }
 
 model Students {
   STUDENT_ID    Int    @id @default(autoincrement())
-  NIK  String
+  NIM  String
   STUDENT_NAME  String
   IS_ACTIVE  Boolean
   Transaction Transaction[] @relation
   Transaction_Books Transaction_Books[] @relation
-  History History[] @relation
 }
 
 model Transaction {
@@ -40,7 +48,6 @@ model Transaction {
   STUDENT_ID  Int
   TRANSACTION_DATE DateTime
   Transaction_Books Transaction_Books[] @relation
-  History History[] @relation
 }
 
 model Transaction_Books {
@@ -57,16 +64,14 @@ model Transaction_Books {
 
 model History {
   HISTORY_ID    Int    @id @default(autoincrement())
-  transaction    Transaction     @relation(fields: [TRANSACTION_ID], references: [TRANSACTION_ID], onUpdate: NoAction)
-  TRANSACTION_ID  Int
-  student    Students     @relation(fields: [STUDENT_ID], references: [STUDENT_ID], onUpdate: NoAction)
-  STUDENT_ID  Int
+  NIM  String
+  STUDENT_NAME  String
   book    Books     @relation(fields: [BOOK_ID], references: [BOOK_ID],onUpdate: NoAction)
   BOOK_ID  Int
+  TITLE  String
   START_DATE DateTime
-  EXACT_RETURN_DATE DateTime
-  INITIAL_RETURN_DATE DateTime?
-  BORROWINGG_TIME String?
+  RETURN_DATE DateTime
+  BORROWING_TIME String
 }
 
 
